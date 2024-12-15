@@ -106,8 +106,8 @@
         </Border>
         <TextBox x:Name="debugCodeTextBox" HorizontalAlignment="Left" Margin="250,23,0,0" TextWrapping="Wrap" Text="{Binding generatedCode}" VerticalAlignment="Top"  Width="295" Height="34" IsReadOnly="True"  Grid.Row="2" Background="{x:Null}" Visibility="Collapsed" FontSize="16" FontWeight="Bold" TextAlignment="Center" BorderBrush="#FFB83838" Foreground="#FFCECCCC" Grid.ColumnSpan="3" />
         <Label x:Name="scoreLabel" Content="Score: "  HorizontalAlignment="Left" VerticalAlignment="Top" Margin="10,214,0,0" FontSize="22" Grid.Row="2" FontFamily="Baskerville Old Face" />
-        <Label Name="timerLabel" FontSize="20" Margin="10,251,0,266" Grid.Row="2" VerticalContentAlignment="Stretch" FontFamily="Baskerville Old Face" Width="199" HorizontalAlignment="Left"/>
-        <Label Name="poging2" FontSize="20" FontFamily="Baskerville Old Face" Margin="10,357,57,275" Grid.Row="2"></Label>
+        <Label Name="timerLabel" FontSize="20" Margin="10,275,0,212" Grid.Row="2" VerticalContentAlignment="Stretch" FontFamily="Baskerville Old Face" Width="231" HorizontalAlignment="Left"/>
+        <Label Name="poging2" FontSize="20" FontFamily="Baskerville Old Face" Margin="10,531,57,101" Grid.Row="2"></Label>
 
     </Grid>
 </Window>

@@ -279,6 +279,7 @@ namespace MasterMind2
             }
             MessageBox.Show(message, "Ronde Eindigt", MessageBoxButton.OK, MessageBoxImage.Information);
             MoveToNextPlayer();
+            UpdateScoreLabel();
 
         }
         private void stopCountDown()
@@ -334,6 +335,7 @@ namespace MasterMind2
                 return;
             }
             Title = $"MasterMind - {playerNames[currentPlayerIndex]}";
+            UpdateScoreLabel();
             ResetGame();
         }
 
@@ -354,6 +356,7 @@ namespace MasterMind2
              GenerateRandomCode();
             NewTitle();
             StartCountDown();
+            UpdateScoreLabel();
 
 
         
@@ -424,7 +427,7 @@ namespace MasterMind2
         }
         private void UpdateScoreLabel()
         {
-            scoreLabel.Content = $"Score: {totalScore}/100 ";
+            scoreLabel.Content = $"Speler: {playerNames[currentPlayerIndex]} \n | Score: {totalScore} | \n | Poging: {currentAttempt}/{remainingAttempts} | ";
         }
         private void CheckForWin()
         {
@@ -453,6 +456,7 @@ namespace MasterMind2
                 {
                     Application.Current.Shutdown();
                 }
+                
             }
         }
 
