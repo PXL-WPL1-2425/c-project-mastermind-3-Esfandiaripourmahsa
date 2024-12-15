@@ -33,6 +33,11 @@ namespace MasterMind2
         private int remainingAttempts = 10;
         private string name = string.Empty;
         private string[] highscores = new string[15];
+        private int highscoreCount = 0;
+        private List<string> playerNames = new List<string>();
+        private int currentPlayerIndex = 0;
+        
+
 
 
 
@@ -46,6 +51,10 @@ namespace MasterMind2
             Name = StartGame();
             ResetGame();
             Title = $"MasterMind - Welkom {Name}";
+            playerNames.Clear();
+            currentPlayerIndex = 0;
+            highscoreCount = 0;
+            
 
             //  timer.Tick += StartCountDown; 
             // timer.Interval = new TimeSpan(0, 0, 1); 
@@ -58,24 +67,7 @@ namespace MasterMind2
         /// De beurt van de speler wordt verloren verklaard, en de volgende poging begint.
         /// </summary>
 
-        private void StopCountDown()
-        {
-            timer.Stop();
-            if (currentAttempt >= 10)
-            {
-                MessageBox.Show($"You failed! De correcte code was: {string.Join(", ", generatedCode)} Nog eens proberen?",
-                                "FAILED",
-                                MessageBoxButton.YesNo,
-                                MessageBoxImage.Question);
-                timer.Stop();
-                return;
-            }
-
-            currentAttempt++;
-            NewTitle();
-
-            StartCountDown();
-        }
+      
 
         private void MainWindow_keyDown(object sender, KeyEventArgs e)
         {
@@ -115,7 +107,7 @@ namespace MasterMind2
 
             if (timeLeft <= 0)
             {
-                StopCountDown();
+                stopCountDown();
             }
         }
 
@@ -235,22 +227,21 @@ namespace MasterMind2
         {
             if (currentAttempt >= remainingAttempts)
             {
-                var failed = MessageBox.Show($"You failed! De correcte code was: {string.Join(", ", generatedCode)} Nog eens proberen?",
-                                 "FAILED",
-                                 MessageBoxButton.YesNo,
-                                 MessageBoxImage.Question);
-                timer.Stop();
-
-                if (failed == MessageBoxResult.Yes)
-                {
-                    ResetGame();
-                    StartGame();
-                }
-                else
-                {
-                    Application.Current.Shutdown();
-                }
+                EndRound("failed");
                 return;
+            }
+
+            if (correctPosition == 4)
+            {
+                EndRound("won");
+            }
+            else if (currentAttempt >= remainingAttempts)
+            {
+                EndRound("failed");
+            }
+            else
+            {
+                StartCountDown();
             }
 
             string guess1 = (color1.SelectedItem as ComboBoxItem)?.Content.ToString() ?? string.Empty;
@@ -266,6 +257,30 @@ namespace MasterMind2
             CheckForWin();
 
         }
+        private void EndRound(string result)
+        {
+            timer.Stop();
+
+            string message;
+            string currentPlayer = playerNames[currentPlayerIndex];
+
+
+            string nextPlayer = GetNextPlayer();
+
+            if (result == "won")
+            {
+                message = $"Gefeliciteerd {playerNames[currentPlayerIndex]}! Je hebt de code gekraakt!\n Nu is {nextPlayer} aan de beurt.";
+                AddHighScore(playerNames[currentPlayerIndex], currentAttempt, totalScore);
+            }
+            else 
+            {
+                message = $"Helaas {playerNames[currentPlayerIndex]}! Je hebt de code niet gekraakt.\nDe juiste code was: {string.Join(", ", generatedCode)}\n Nu is {nextPlayer} aan de beurt." + $"Spel verloren - {playerNames[currentPlayerIndex]}";
+               
+            }
+            MessageBox.Show(message, "Ronde Eindigt", MessageBoxButton.OK, MessageBoxImage.Information);
+            MoveToNextPlayer();
+
+        }
         private void stopCountDown()
         {
             timer.Stop();
@@ -273,20 +288,26 @@ namespace MasterMind2
             if (currentAttempt >= remainingAttempts)
             { 
                 AddHighScore(name,currentAttempt,totalScore);
-            
-                var failed = MessageBox.Show($"You failed! De correcte code was: {string.Join(", ", generatedCode)} Bekijk highscores?",
+
+                string nextPlayer = GetNextPlayer();
+
+                var failed = MessageBox.Show($"You failed! De correcte code was: {string.Join(", ", generatedCode)} "+ $"De volgende speler is: {nextPlayer}. " + "Bekijk highscores?",
                                  "FAILED",
                                  MessageBoxButton.YesNo,
                                  MessageBoxImage.Question);
-               
-               
+
+
                 if (failed == MessageBoxResult.Yes)
                 {
                     ShowHighScores();
                     StartGame();
 
                 }
-                ResetGame();
+                else
+                {
+                    App.Current.Shutdown();
+                }
+                return ;
 
 
             }
@@ -294,6 +315,28 @@ namespace MasterMind2
             NewTitle();
             StartCountDown();
         }
+        private string GetNextPlayer()
+        {
+            int nextPlayerIndex = (currentPlayerIndex + 1) % playerNames.Count;
+            return playerNames[nextPlayerIndex]; 
+
+
+        }
+        private void MoveToNextPlayer()
+        {
+            currentPlayerIndex = (currentPlayerIndex + 1) % playerNames.Count;
+
+            if (currentPlayerIndex == 0) 
+            {
+                MessageBox.Show("Alle spelers hebben gespeeld. Bekijk de highscores!", "Spel Eindigt", MessageBoxButton.OK, MessageBoxImage.Information);
+                ShowHighScores();
+                Application.Current.Shutdown();
+                return;
+            }
+            Title = $"MasterMind - {playerNames[currentPlayerIndex]}";
+            ResetGame();
+        }
+
         private void ResetGame()
         {
             currentAttempt = 0;
@@ -389,8 +432,10 @@ namespace MasterMind2
             {
                 timer.Stop();
                 AddHighScore(name,currentAttempt,totalScore);
+                
+                string nextPlayer = GetNextPlayer();
 
-                var result = MessageBox.Show($"Code is geraakt in {currentAttempt} pogingen.  Wil je nog eens?",
+                var result = MessageBox.Show($"Code is geraakt in {currentAttempt} pogingen.\n  De volgende speler is: {nextPlayer}.\\n\" +\r\n            \"Wil je nog eens spelen?",
                                              "WINNER",
                                              MessageBoxButton.YesNo,
                                              MessageBoxImage.Information);
@@ -453,11 +498,12 @@ namespace MasterMind2
         private void MenuItem_NewGame_Click(object sender, RoutedEventArgs e)
         {
             ResetGame();
+            StartGame();    
         }
 
 
 
-        private List<string> playerNames = new List<string>();
+       
 
         private string StartGame()
         {
@@ -484,8 +530,7 @@ namespace MasterMind2
                 { 
                   
                         playerNames.Add(name);
-                        MessageBox.Show($"Welkom, {name}!", "Speler toegevoegd", MessageBoxButton.OK, MessageBoxImage.Information);
-                  
+                       
                 }
                
 
@@ -494,7 +539,7 @@ namespace MasterMind2
             if (playerNames.Count == 0)
             {
                 MessageBox.Show("U moet minstens één speler toevoegen om het spel te starten.", "Geen spelers", MessageBoxButton.OK, MessageBoxImage.Warning);
-                Application.Current.Shutdown(); // Sluit de applicatie af als er geen spelers zijn
+                Application.Current.Shutdown(); // applicatie sluiten af als er geen spelers zijn
                 return "";
             }
             string playerList = string.Join(", ", playerNames);
@@ -508,24 +553,24 @@ namespace MasterMind2
             ResetGame();
            
             Title = $"MasterMind - Welkom {playerNames[0]}";
-            return playerNames[0];
+            return name;
+            name= playerNames[0];
 
         }
 
         private void AddHighScore(string Name, int attempts, int score)
         {
-
-
-            string newHighscore = $"{Name} - {attempts} pogingen - {score}/100";
-
-            for (int i = 0; i < highscores.Length; i++)
+            if (highscoreCount < highscores.Length)
             {
-                if (string.IsNullOrWhiteSpace(highscores[i]))
-                {
-                    highscores[i] = newHighscore;
-                    break;
-                }
+                highscores[highscoreCount] = $"{name} - {attempts} pogingen - {score}/100";
+                highscoreCount++;
             }
+            else
+            {
+                
+                highscores[highscoreCount - 1] = $"{name} - {attempts} pogingen - {score}/100";
+            }
+
             highscores = highscores
                  .Where(h => IsValidHighScore(h))
                    .OrderByDescending(h => GetScoreFromHighScore(h))
@@ -537,33 +582,17 @@ namespace MasterMind2
         }
         private int GetScoreFromHighScore(string highscore)
         {
-            try
-            {
-                
-                string scorePart = highscore.Split('-')[2].Split('/')[0].Trim();
-                return int.TryParse(scorePart, out int score) ? score : 0;
-            }
-            catch
-            {
-                return 0; 
-            }
+            string scorePart = highscore.Split('-')[2].Split('/')[0].Trim();
+            return int.TryParse(scorePart, out int score) ? score : 0;
         }
         
 
       
         private int GetAttemptsFromHighScore(string highscore)
         {
+            string attemptsPart = highscore.Split('-')[1].Split(' ')[0].Trim();
+            return int.TryParse(attemptsPart, out int attempts) ? attempts : 0;
 
-
-            try
-            {
-                string attemptsPart = highscore.Split('-')[1].Split(' ')[0].Trim();
-                return int.TryParse(attemptsPart, out int attempts) ? attempts : 0;
-            }
-            catch
-            {
-                return 0;
-            }
         }
 
 
@@ -637,7 +666,7 @@ namespace MasterMind2
             if (currentAttempt >= remainingAttempts)
             {
                 MessageBox.Show($"Je hebt het niet gehaald binnen {remainingAttempts} pogingen.", "Game Over", MessageBoxButton.OK, MessageBoxImage.Information);
-                StopCountDown();
+                stopCountDown();
             }
         }
 
