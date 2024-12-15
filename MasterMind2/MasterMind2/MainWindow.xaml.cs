@@ -225,6 +225,11 @@ namespace MasterMind2
 
         private void CheckButton_Click(object sender, RoutedEventArgs e)
         {
+            currentAttempt++;
+            this.Title = $"MasterMind ({string.Join(",", generatedCode)}),Poging: " + currentAttempt;
+            timer.Start();
+            
+
             if (currentAttempt >= remainingAttempts)
             {
                 EndRound("failed");
@@ -423,11 +428,13 @@ namespace MasterMind2
             totalScore += (correctPosition * 10) + (correctColorWrongPosition * 5) + (incorrectColor * -2);
 
             feedbackOverviewPanel.Children.Add(feedbackRow);
-            UpdateScoreLabel();
+            
         }
         private void UpdateScoreLabel()
         {
-            scoreLabel.Content = $"Speler: {playerNames[currentPlayerIndex]} \n | Score: {totalScore} | \n | Poging: {currentAttempt}/{remainingAttempts} | ";
+            scoreLabel.Content = $"Speler: {playerNames[currentPlayerIndex]} \n" +
+                $"| Score: {totalScore} | \n " +
+                $"| Poging: {currentAttempt}/{remainingAttempts} |";
         }
         private void CheckForWin()
         {
@@ -442,6 +449,7 @@ namespace MasterMind2
                                              "WINNER",
                                              MessageBoxButton.YesNo,
                                              MessageBoxImage.Information);
+               
 
                 if (result == MessageBoxResult.Yes)
                 {
@@ -450,6 +458,8 @@ namespace MasterMind2
                 }
                 else if (result==MessageBoxResult.No)
                 {
+
+
                     ShowHighScores();
                 }
                 else
@@ -511,9 +521,6 @@ namespace MasterMind2
 
         private string StartGame()
         {
-            playerNames.Clear();
-            
-
             do
             {
            
@@ -536,6 +543,7 @@ namespace MasterMind2
                         playerNames.Add(name);
                        
                 }
+                 playerNames.Add(name.Trim());
                
 
             } while (MessageBox.Show("Wilt u nog een speler toevoegen?", "Nieuwe speler?", MessageBoxButton.YesNo, MessageBoxImage.Question) == MessageBoxResult.Yes);
@@ -555,10 +563,11 @@ namespace MasterMind2
             currentAttempt = 0;         
 
             ResetGame();
-           
+            UpdateScoreLabel();
+
             Title = $"MasterMind - Welkom {playerNames[0]}";
-            return name;
-            name= playerNames[0];
+            return playerNames[0];
+           
 
         }
 
