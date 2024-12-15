@@ -1,0 +1,113 @@
+﻿<Window x:Class="MasterMind2.MainWindow" 
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+        xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+        xmlns:local="clr-namespace:MasterMind2"
+        mc:Ignorable="d"
+        Title="MasterMind" Height="800" Width="800" WindowStartupLocation="CenterScreen">
+    <Grid >
+        <Grid.ColumnDefinitions>
+            <ColumnDefinition Width="52*"/>
+            <ColumnDefinition Width="49*"/>
+            <ColumnDefinition Width="24*"/>
+            <ColumnDefinition/>
+            <ColumnDefinition Width="7*"/>
+            <ColumnDefinition Width="20*"/>
+            <ColumnDefinition Width="7*"/>
+        </Grid.ColumnDefinitions>
+        <Grid.RowDefinitions>
+            <RowDefinition Height="14*"/>
+            <RowDefinition Height="25*"/>
+            <RowDefinition Height="395*"/>
+        </Grid.RowDefinitions>
+
+        <Grid.Background>
+            <LinearGradientBrush EndPoint="0.5,1" StartPoint="0.5,0">
+                <GradientStop Color="Black"/>
+                <GradientStop Color="White" Offset="1"/>
+            </LinearGradientBrush>
+        </Grid.Background>
+
+        <Menu Height="30" VerticalAlignment="Center" Width="800" Grid.ColumnSpan="7">
+            <MenuItem Header="Bestand" FontSize="18">
+                <MenuItem Header="_Nieuwe Spel" Click="MenuItem_NewGame_Click"/>
+                <MenuItem Header="_Highscore" Click="MenuItem_HighScore_Click"/>
+
+                <MenuItem Header="_Afsluiten" Click="MenuItem_Exit_Click"/>
+            </MenuItem>
+            <MenuItem Header ="Instellingen" FontSize="18">
+                <MenuItem Header="Aantal pogingen" Click="AantalPoging_Click"/>
+
+
+            </MenuItem>
+        </Menu>
+
+
+
+
+
+
+
+
+
+
+        <Button x:Name="checkCodeButton" Content="Check code" HorizontalAlignment="Left" Margin="241,205,0,0" VerticalAlignment="Top" FontSize="24" Height="50" Width="318" Click="CheckButton_Click" Background="#FFC00000" BorderBrush="Black" BorderThickness="5,5,5,5" Foreground="White" FontFamily="Tempus Sans ITC" Grid.Row="2" Grid.ColumnSpan="3"/>
+
+        <StackPanel x:Name="feedbackOverviewPanel" Grid.Row="2" HorizontalAlignment="Left" Margin="72,251,0,10" Width="260" Grid.ColumnSpan="2" Grid.Column="1" />
+
+
+
+        <ComboBox  Name="color1" HorizontalAlignment="Left" Margin="80,20,0,0" VerticalAlignment="Top" Width="150" Height="35" SelectionChanged="color1_SelectionChanged" Grid.Row="1" Grid.RowSpan="2" Background="#FFFEFBFB">
+            <ComboBoxItem Content="Red"></ComboBoxItem>
+            <ComboBoxItem Content="Orange"></ComboBoxItem>
+            <ComboBoxItem Content="Yellow"></ComboBoxItem>
+            <ComboBoxItem Content="Green"></ComboBoxItem>
+            <ComboBoxItem Content="White"></ComboBoxItem>
+            <ComboBoxItem Content="Blue"></ComboBoxItem>
+        </ComboBox>
+        <ComboBox Name="color2" HorizontalAlignment="Left" Margin="248,20,0,0" VerticalAlignment="Top" Width="150" Height="35" SelectionChanged="color2_SelectionChanged" Grid.Row="1" Grid.RowSpan="2" Grid.ColumnSpan="2">
+            <ComboBoxItem Content="Red"></ComboBoxItem>
+            <ComboBoxItem Content="Orange"></ComboBoxItem>
+            <ComboBoxItem Content="Yellow"></ComboBoxItem>
+            <ComboBoxItem Content="Green"></ComboBoxItem>
+            <ComboBoxItem Content="White"></ComboBoxItem>
+            <ComboBoxItem Content="Blue"></ComboBoxItem>
+        </ComboBox>
+        <ComboBox Name="color3" HorizontalAlignment="Left" Margin="154,20,0,0" VerticalAlignment="Top" Width="150" Height="35" SelectionChanged="color3_SelectionChanged" Grid.Row="1" Grid.RowSpan="2" Grid.ColumnSpan="2" Grid.Column="1">
+            <ComboBoxItem Content="Red"></ComboBoxItem>
+            <ComboBoxItem Content="Orange"></ComboBoxItem>
+            <ComboBoxItem Content="Yellow"></ComboBoxItem>
+            <ComboBoxItem Content="Green"></ComboBoxItem>
+            <ComboBoxItem Content="White"></ComboBoxItem>
+            <ComboBoxItem Content="Blue"></ComboBoxItem>
+        </ComboBox>
+        <ComboBox Name="color4" HorizontalAlignment="Left" Margin="75,20,0,0" VerticalAlignment="Top" Width="150" Height="35" SelectionChanged="color4_SelectionChanged" Grid.Row="1" Grid.ColumnSpan="4" Grid.RowSpan="2" Grid.Column="2">
+            <ComboBoxItem Content="Red"></ComboBoxItem>
+            <ComboBoxItem Content="Orange"></ComboBoxItem>
+            <ComboBoxItem Content="Yellow"></ComboBoxItem>
+            <ComboBoxItem Content="Green"></ComboBoxItem>
+            <ComboBoxItem Content="White"></ComboBoxItem>
+            <ComboBoxItem Content="Blue"></ComboBoxItem>
+        </ComboBox>
+
+        <Border Name="color1Label" HorizontalAlignment="Left" Height="100" Margin="103,75,0,0" VerticalAlignment="Top" Width="100" BorderBrush="Black" BorderThickness="2" CornerRadius="50" Grid.Row="2">
+            <Label Background="Transparent"/>
+        </Border>
+
+        <Border Name="color2Label" HorizontalAlignment="Left" Height="100" Margin="15,75,0,0" VerticalAlignment="Top" Width="100" BorderBrush="Black" BorderThickness="2" CornerRadius="50" Grid.Row="2" Grid.Column="1">
+            <Label Background="Transparent"/>
+        </Border>
+        <Border Name="color3Label" HorizontalAlignment="Left" Height="100" Margin="185,75,0,0" VerticalAlignment="Top" Width="100" BorderBrush="Black" BorderThickness="2" CornerRadius="50" Grid.Row="2" Grid.ColumnSpan="2" Grid.Column="1">
+            <Label Background="Transparent"/>
+        </Border>
+        <Border Name="color4Label" HorizontalAlignment="Left" Height="100" Margin="99,75,0,0" VerticalAlignment="Top" Width="100"  BorderBrush="Black" BorderThickness="2" CornerRadius="50" Grid.Row="2" Grid.ColumnSpan="4" Grid.Column="2">
+            <Label Background="Transparent"/>
+        </Border>
+        <TextBox x:Name="debugCodeTextBox" HorizontalAlignment="Left" Margin="250,23,0,0" TextWrapping="Wrap" Text="{Binding generatedCode}" VerticalAlignment="Top"  Width="295" Height="34" IsReadOnly="True"  Grid.Row="2" Background="{x:Null}" Visibility="Collapsed" FontSize="16" FontWeight="Bold" TextAlignment="Center" BorderBrush="#FFB83838" Foreground="#FFCECCCC" Grid.ColumnSpan="3" />
+        <Label x:Name="scoreLabel" Content="Score: "  HorizontalAlignment="Left" VerticalAlignment="Top" Margin="10,214,0,0" FontSize="22" Grid.Row="2" FontFamily="Baskerville Old Face" />
+        <Label Name="timerLabel" FontSize="20" Margin="10,251,0,266" Grid.Row="2" VerticalContentAlignment="Stretch" FontFamily="Baskerville Old Face" Width="199" HorizontalAlignment="Left"/>
+        <Label Name="poging2" FontSize="20" FontFamily="Baskerville Old Face" Margin="10,357,57,275" Grid.Row="2"></Label>
+
+    </Grid>
+</Window>
