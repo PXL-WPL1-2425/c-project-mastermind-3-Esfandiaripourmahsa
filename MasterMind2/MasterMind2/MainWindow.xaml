@@ -52,9 +52,16 @@
 
 
 
-        <Button x:Name="checkCodeButton" Content="Check code" HorizontalAlignment="Left" Margin="241,205,0,0" VerticalAlignment="Top" FontSize="24" Height="50" Width="318" Click="CheckButton_Click" Background="#FFC00000" BorderBrush="Black" BorderThickness="5,5,5,5" Foreground="White" FontFamily="Tempus Sans ITC" Grid.Row="2" Grid.ColumnSpan="3"/>
-
-        <StackPanel x:Name="feedbackOverviewPanel" Grid.Row="2" HorizontalAlignment="Left" Margin="72,251,0,10" Width="260" Grid.ColumnSpan="2" Grid.Column="1" />
+        <Button x:Name="checkCodeButton" Content="Check code" HorizontalAlignment="Left" Margin="171,203,0,0" VerticalAlignment="Top" FontSize="24" Height="91" Width="204" Click="CheckButton_Click" Background="#FFC00000" BorderBrush="Black" BorderThickness="5,5,5,5" Foreground="White" FontFamily="Tempus Sans ITC" Grid.Row="2" Grid.ColumnSpan="2"/>
+        <Button Content="Koop Hint" BorderBrush="Black" BorderThickness="5,5,5,5"
+        Width="195" 
+        HorizontalAlignment="Left" 
+        Margin="165,206,0,417" 
+        Click="KoopHint_Click" 
+        Background="#FFAA00" 
+        Foreground="Black" 
+         Grid.Column="1" Grid.ColumnSpan="2" Grid.Row="2" FontFamily="Tempus Sans ITC" FontSize="24" />
+        <StackPanel x:Name="feedbackOverviewPanel" Grid.Row="2" HorizontalAlignment="Left" Margin="35,251,0,10" Width="260" Grid.ColumnSpan="5" Grid.Column="2" />
 
 
 
@@ -105,8 +112,8 @@
             <Label Background="Transparent"/>
         </Border>
         <TextBox x:Name="debugCodeTextBox" HorizontalAlignment="Left" Margin="250,23,0,0" TextWrapping="Wrap" Text="{Binding generatedCode}" VerticalAlignment="Top"  Width="295" Height="34" IsReadOnly="True"  Grid.Row="2" Background="{x:Null}" Visibility="Collapsed" FontSize="16" FontWeight="Bold" TextAlignment="Center" BorderBrush="#FFB83838" Foreground="#FFCECCCC" Grid.ColumnSpan="3" />
-        <Label x:Name="scoreLabel" Content="Score: "  HorizontalAlignment="Left" Margin="10,258,0,253" FontSize="22" Grid.Row="2" FontFamily="Baskerville Old Face" Width="231" />
-        <Label Name="timerLabel" FontSize="20" Margin="7,368,0,119" Grid.Row="2" VerticalContentAlignment="Stretch" FontFamily="Baskerville Old Face" Width="231" HorizontalAlignment="Left"/>
+        <Label x:Name="scoreLabel" Content="Score: "  HorizontalAlignment="Left" Margin="10,342,0,170" FontSize="22" Grid.Row="2" FontFamily="Baskerville Old Face" Width="231" />
+        <Label Name="timerLabel" FontSize="20" Margin="258,294,0,193" Grid.Row="2" VerticalContentAlignment="Stretch" FontFamily="Baskerville Old Face" Width="231" HorizontalAlignment="Left" Grid.ColumnSpan="2"/>
         <Label Name="poging2" FontSize="20" FontFamily="Baskerville Old Face" Margin="10,549,57,83" Grid.Row="2" HorizontalAlignment="Left"></Label>
 
     </Grid>

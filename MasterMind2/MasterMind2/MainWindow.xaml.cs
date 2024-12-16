@@ -36,7 +36,7 @@ namespace MasterMind2
         private int highscoreCount = 0;
         private List<string> playerNames = new List<string>();
         private int currentPlayerIndex = 0;
-        
+
 
 
 
@@ -54,7 +54,7 @@ namespace MasterMind2
             playerNames.Clear();
             currentPlayerIndex = 0;
             highscoreCount = 0;
-            
+
 
             //  timer.Tick += StartCountDown; 
             // timer.Interval = new TimeSpan(0, 0, 1); 
@@ -67,7 +67,7 @@ namespace MasterMind2
         /// De beurt van de speler wordt verloren verklaard, en de volgende poging begint.
         /// </summary>
 
-      
+
 
         private void MainWindow_keyDown(object sender, KeyEventArgs e)
         {
@@ -115,7 +115,7 @@ namespace MasterMind2
         private void UpdateTitleWithTime()
         {
             Title = $"MasterMind - Poging {currentAttempt} ";
-            timerLabel.Content =$"\n Tijd over : \n" +
+            timerLabel.Content = $"\n Tijd over : \n" +
                 $"{timeLeft} seconden! ";
         }
 
@@ -228,7 +228,7 @@ namespace MasterMind2
             currentAttempt++;
             this.Title = $"MasterMind ({string.Join(",", generatedCode)}),Poging: " + currentAttempt;
             timer.Start();
-            
+
 
             if (currentAttempt >= remainingAttempts)
             {
@@ -277,10 +277,10 @@ namespace MasterMind2
                 message = $"Gefeliciteerd {playerNames[currentPlayerIndex]}! Je hebt de code gekraakt!\n Nu is {nextPlayer} aan de beurt.";
                 AddHighScore(playerNames[currentPlayerIndex], currentAttempt, totalScore);
             }
-            else 
+            else
             {
                 message = $"Helaas {playerNames[currentPlayerIndex]}! Je hebt de code niet gekraakt.\nDe juiste code was: {string.Join(", ", generatedCode)}\n Nu is {nextPlayer} aan de beurt." + $"Spel verloren - {playerNames[currentPlayerIndex]}";
-               
+
             }
             MessageBox.Show(message, "Ronde Eindigt", MessageBoxButton.OK, MessageBoxImage.Information);
             MoveToNextPlayer();
@@ -292,12 +292,12 @@ namespace MasterMind2
             timer.Stop();
 
             if (currentAttempt >= remainingAttempts)
-            { 
-                AddHighScore(name,currentAttempt,totalScore);
+            {
+                AddHighScore(name, currentAttempt, totalScore);
 
                 string nextPlayer = GetNextPlayer();
 
-                var failed = MessageBox.Show($"You failed! De correcte code was: {string.Join(", ", generatedCode)} "+ $"De volgende speler is: {nextPlayer}. " + "Bekijk highscores?",
+                var failed = MessageBox.Show($"You failed! De correcte code was: {string.Join(", ", generatedCode)} " + $"De volgende speler is: {nextPlayer}. " + "Bekijk highscores?",
                                  "FAILED",
                                  MessageBoxButton.YesNo,
                                  MessageBoxImage.Question);
@@ -313,7 +313,7 @@ namespace MasterMind2
                 {
                     App.Current.Shutdown();
                 }
-                return ;
+                return;
 
 
             }
@@ -324,7 +324,7 @@ namespace MasterMind2
         private string GetNextPlayer()
         {
             int nextPlayerIndex = (currentPlayerIndex + 1) % playerNames.Count;
-            return playerNames[nextPlayerIndex]; 
+            return playerNames[nextPlayerIndex];
 
 
         }
@@ -332,7 +332,7 @@ namespace MasterMind2
         {
             currentPlayerIndex = (currentPlayerIndex + 1) % playerNames.Count;
 
-            if (currentPlayerIndex == 0) 
+            if (currentPlayerIndex == 0)
             {
                 MessageBox.Show("Alle spelers hebben gespeeld. Bekijk de highscores!", "Spel Eindigt", MessageBoxButton.OK, MessageBoxImage.Information);
                 ShowHighScores();
@@ -356,15 +356,15 @@ namespace MasterMind2
             color2.SelectedItem = null;
             color3.SelectedItem = null;
             color4.SelectedItem = null;
-         
-            scoreLabel.Content = string.Empty;  
-             GenerateRandomCode();
+
+            scoreLabel.Content = string.Empty;
+            GenerateRandomCode();
             NewTitle();
             StartCountDown();
             UpdateScoreLabel();
 
 
-        
+
         }
 
 
@@ -428,7 +428,7 @@ namespace MasterMind2
             totalScore += (correctPosition * 10) + (correctColorWrongPosition * 5) + (incorrectColor * -2);
 
             feedbackOverviewPanel.Children.Add(feedbackRow);
-            
+
         }
         private void UpdateScoreLabel()
         {
@@ -441,22 +441,22 @@ namespace MasterMind2
             if (correctPosition == 4)
             {
                 timer.Stop();
-                AddHighScore(name,currentAttempt,totalScore);
-                
+                AddHighScore(name, currentAttempt, totalScore);
+
                 string nextPlayer = GetNextPlayer();
 
                 var result = MessageBox.Show($"Code is geraakt in {currentAttempt} pogingen.\n  De volgende speler is: {nextPlayer}.\\n\" +\r\n            \"Wil je nog eens spelen?",
                                              "WINNER",
                                              MessageBoxButton.YesNo,
                                              MessageBoxImage.Information);
-               
+
 
                 if (result == MessageBoxResult.Yes)
                 {
                     ResetGame();
                     StartGame();
                 }
-                else if (result==MessageBoxResult.No)
+                else if (result == MessageBoxResult.No)
                 {
 
 
@@ -466,7 +466,7 @@ namespace MasterMind2
                 {
                     Application.Current.Shutdown();
                 }
-                
+
             }
         }
 
@@ -512,42 +512,42 @@ namespace MasterMind2
         private void MenuItem_NewGame_Click(object sender, RoutedEventArgs e)
         {
             ResetGame();
-            StartGame();    
+            StartGame();
         }
 
 
 
-       
+
 
         private string StartGame()
         {
             do
             {
-           
+
                 string name = Microsoft.VisualBasic.Interaction.InputBox("Wat is uw naam?", "Speler toevoegen", " ");
 
                 if (string.IsNullOrEmpty(name))
                 {
-                   
+
                     Application.Current.Shutdown();
                     return "";
-                } 
+                }
 
                 if (string.IsNullOrWhiteSpace(name))
                 {
                     MessageBox.Show("Gelieve een geldige naam in te voeren.", "Ongeldige invoer", MessageBoxButton.OK, MessageBoxImage.Warning);
                 }
                 else
-                { 
-                  
-                        playerNames.Add(name);
-                       
+                {
+
+                    playerNames.Add(name);
+
                 }
-                 playerNames.Add(name.Trim());
-               
+                playerNames.Add(name.Trim());
+
 
             } while (MessageBox.Show("Wilt u nog een speler toevoegen?", "Nieuwe speler?", MessageBoxButton.YesNo, MessageBoxImage.Question) == MessageBoxResult.Yes);
-           
+
             if (playerNames.Count == 0)
             {
                 MessageBox.Show("U moet minstens één speler toevoegen om het spel te starten.", "Geen spelers", MessageBoxButton.OK, MessageBoxImage.Warning);
@@ -559,15 +559,15 @@ namespace MasterMind2
 
 
             remainingAttempts = AskMaxAttempts();
-            totalScore = 100;            
-            currentAttempt = 0;         
+            totalScore = 100;
+            currentAttempt = 0;
 
             ResetGame();
             UpdateScoreLabel();
 
             Title = $"MasterMind - Welkom {playerNames[0]}";
             return playerNames[0];
-           
+
 
         }
 
@@ -580,7 +580,7 @@ namespace MasterMind2
             }
             else
             {
-                
+
                 highscores[highscoreCount - 1] = $"{name} - {attempts} pogingen - {score}/100";
             }
 
@@ -588,7 +588,7 @@ namespace MasterMind2
                  .Where(h => IsValidHighScore(h))
                    .OrderByDescending(h => GetScoreFromHighScore(h))
                    .ThenBy(h => GetAttemptsFromHighScore(h))
-                    .Concat(Enumerable.Repeat(string.Empty, highscores.Length)) 
+                    .Concat(Enumerable.Repeat(string.Empty, highscores.Length))
                     .Take(highscores.Length)
                    .ToArray();
 
@@ -598,9 +598,9 @@ namespace MasterMind2
             string scorePart = highscore.Split('-')[2].Split('/')[0].Trim();
             return int.TryParse(scorePart, out int score) ? score : 0;
         }
-        
 
-      
+
+
         private int GetAttemptsFromHighScore(string highscore)
         {
             string attemptsPart = highscore.Split('-')[1].Split(' ')[0].Trim();
@@ -624,7 +624,7 @@ namespace MasterMind2
         {
             try
             {
-               
+
                 if (string.IsNullOrWhiteSpace(highscore))
                     return false;
 
@@ -632,7 +632,7 @@ namespace MasterMind2
                 if (parts.Length < 3)
                     return false;
 
-               
+
                 GetScoreFromHighScore(highscore);
                 GetAttemptsFromHighScore(highscore);
 
@@ -640,7 +640,7 @@ namespace MasterMind2
             }
             catch
             {
-                return false; 
+                return false;
             }
         }
         private int AskMaxAttempts()
@@ -649,27 +649,27 @@ namespace MasterMind2
 
             while (true)
             {
-               
+
                 string input = Microsoft.VisualBasic.Interaction.InputBox("Hoeveel pogingen wil je toestaan? (tussen 3 en 20)", "Maximaal aantal pogingen", "10");
 
                 if (string.IsNullOrWhiteSpace(input))
                 {
-                    
+
                     Application.Current.Shutdown();
                     return 0;
                 }
 
-               
+
                 if (int.TryParse(input, out maxAttempts))
                 {
-                    
+
                     if (maxAttempts >= 3 && maxAttempts <= 20)
                     {
                         return maxAttempts;
                     }
                 }
 
-               
+
                 MessageBox.Show("Gelieve een geldig getal tussen 3 en 20 in te voeren.", "Ongeldige invoer", MessageBoxButton.OK, MessageBoxImage.Warning);
             }
         }
@@ -683,8 +683,70 @@ namespace MasterMind2
             }
         }
 
+        private void KoopHint_Click(object sender, RoutedEventArgs e)
+        {
+            MessageBoxResult result = MessageBox.Show(
+            "Wil je een hint kopen?\n\n" +
+                "1. Een juiste kleur (kost 15 punten).\n" +
+                "2. Een juiste kleur op de juiste plaats (kost 25 punten).\n\n" +
+                "Klik op 'Yes' voor een juiste kleur.\n" +
+                "Klik op 'No' voor een juiste kleur op de juiste plaats.",
+                "Koop een Hint",
+                MessageBoxButton.YesNoCancel,
+                MessageBoxImage.Question
+            );
+            if (result == MessageBoxResult.Yes)
+            {
+               
+                if (UpdateScore(-15)) 
+                {
+                    GeefHintJuisteKleur();
+                }
+            }
+            else if (result == MessageBoxResult.No)
+            {
+                
+                if (UpdateScore(-25)) 
+                {
+                    GeefHintJuisteKleurEnPlaats();
+                }
+            }
+            else
+            {
+                MessageBox.Show("Hint geannuleerd.", "Annulering", MessageBoxButton.OK, MessageBoxImage.Information);
+            }
 
+        }
+        private bool UpdateScore(int strafpunten)
+        {
+            int huidigeScore = int.Parse(scoreLabel.Content.ToString());
 
+            if (huidigeScore + strafpunten < 0)
+            {
+                MessageBox.Show("Niet genoeg punten om deze hint te kopen!", "Fout", MessageBoxButton.OK, MessageBoxImage.Error);
+                return false;
+            }
+
+            huidigeScore += strafpunten;
+            scoreLabel.Content = huidigeScore.ToString();
+            return true;
+        }
+
+        private void GeefHintJuisteKleur()
+        {
+            Random random = new Random();
+            int hintIndex = random.Next(0, generatedCode.Length); 
+            string kleur = generatedCode[hintIndex];
+            MessageBox.Show($"Hint: Eén van de juiste kleuren is '{kleur}'.", "Hint - Juiste Kleur", MessageBoxButton.OK, MessageBoxImage.Information);
+        }
+
+        private void GeefHintJuisteKleurEnPlaats()
+        {
+            Random random = new Random();
+            int hintIndex = random.Next(0, generatedCode.Length); 
+            string kleur = generatedCode[hintIndex];
+            MessageBox.Show($"Hint: De kleur '{kleur}' zit op positie {hintIndex + 1}.", "Hint - Kleur & Positie", MessageBoxButton.OK, MessageBoxImage.Information);
+        }
     }
 
 }
